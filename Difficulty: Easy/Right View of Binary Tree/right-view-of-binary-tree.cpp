@@ -40,29 +40,40 @@ struct Node
 class Solution
 {
     public:
+    void seeright(Node* root, int level, vector<int>& ans){
+        if(!root) return;
+        
+        if(level == ans.size()) ans.push_back(root->data);
+        seeright(root->right, level+1, ans);
+        seeright(root->left, level+1, ans);
+    }
     //Function to return list containing elements of right view of binary tree.
     vector<int> rightView(Node *root)
     {
        // Your Code here
        vector<int> ans;
        if(!root) return ans;
-  
-       queue<Node*> q;
-       q.push(root);
-   
-       while(!q.empty()){
-          int n= q.size();
-          ans.push_back(q.back()->data);
        
-       while(n--){
-           Node* temp = q.front();
-           q.pop();
-           if(temp->left) q.push(temp->left);
-           if(temp->right) q.push(temp->right);
-       }
-   }
+       // By Recursion
+       seeright(root, 0, ans);
+       return ans;
+  
+//       queue<Node*> q;
+//       q.push(root);
    
-   return ans;
+//       while(!q.empty()){
+//           int n= q.size();
+//           ans.push_back(q.back()->data);
+       
+//       while(n--){
+//           Node* temp = q.front();
+//           q.pop();
+//           if(temp->left) q.push(temp->left);
+//           if(temp->right) q.push(temp->right);
+//       }
+//   }
+   
+//   return ans;
     }
 };
 
