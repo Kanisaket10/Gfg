@@ -126,6 +126,14 @@ struct Node
     }
 };
  */
+void seeleft(Node * root, int level, vector<int>& ans){
+    if(!root) return;
+    
+    if(level == ans.size()) ans.push_back(root->data);
+    
+    seeleft(root->left, level+1, ans);
+    seeleft(root->right, level+1, ans);
+}
 
 //Function to return a list containing elements of left view of the binary tree.
 vector<int> leftView(Node *root)
@@ -133,22 +141,28 @@ vector<int> leftView(Node *root)
    // Your code here
    vector<int> ans;
    if(!root) return ans;
-  
-   queue<Node*> q;
-   q.push(root);
    
-   while(!q.empty()){
-       int n= q.size();
-       ans.push_back(q.front()->data);
-       
-       while(n--){
-           Node* temp = q.front();
-           q.pop();
-           if(temp->left) q.push(temp->left);
-           if(temp->right) q.push(temp->right);
-       }
-   }
-   
+   //By recursion 
+   seeleft(root, 0, ans);
    return ans;
+   
+   // By using queue
+  
+//   queue<Node*> q;
+//   q.push(root);
+   
+//   while(!q.empty()){
+//       int n= q.size();
+//       ans.push_back(q.front()->data);
+       
+//       while(n--){
+//           Node* temp = q.front();
+//           q.pop();
+//           if(temp->left) q.push(temp->left);
+//           if(temp->right) q.push(temp->right);
+//       }
+//   }
+   
+//   return ans;
    
 }
