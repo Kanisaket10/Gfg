@@ -96,43 +96,78 @@ struct Node {
 };*/
 class Solution {
 public:
-    vector<int> inOrder(Node* root)
-    {
-        //code here
-        if(!root) return {};
-        vector<int> ans;
-        stack<Node*> st;
-        stack<bool> check;
+// Here the Time complexity is O(n) space complexity O(n)
+    // vector<int> inOrder(Node* root)
+    // {
+    //     //code here
+    //     if(!root) return {};
+    //     vector<int> ans;
+    //     stack<Node*> st;
+    //     stack<bool> check;
         
-        st.push(root);
-        check.push(0);
+    //     st.push(root);
+    //     check.push(0);
         
-        while(!st.empty()){
-            Node* temp = st.top();
-            st.pop();
-            bool flag = check.top();
-            check.pop();
+    //     while(!st.empty()){
+    //         Node* temp = st.top();
+    //         st.pop();
+    //         bool flag = check.top();
+    //         check.pop();
             
-            if(flag){
-                ans.push_back(temp->data);
-            }
+    //         if(flag){
+    //             ans.push_back(temp->data);
+    //         }
             
-            // RNL pushing in stack
-            if(!flag){
-            if(temp->right) {
-               st.push(temp->right);
-               check.push(0);
-            }
-            st.push(temp);
-            check.push(1);
-            if(temp->left) {
-                st.push(temp->left);
-                check.push(0);
-            }
-            }
-        }
-        return ans;
-    }
+    //         // RNL pushing in stack
+    //         if(!flag){
+    //           if(temp->right) {
+    //              st.push(temp->right);
+    //              check.push(0);
+    //             }  
+    //           st.push(temp);
+    //           check.push(1);
+    //           if(temp->left) {
+    //              st.push(temp->left);
+    //              check.push(0);
+    //             }
+    //         }
+    //     }
+    //     return ans;
+    // }
+    
+//  Here we are using Morris Traversal which Have space complexity O(n)   
+
+     vector<int> inOrder(Node* root){
+         vector<int> ans;
+         while(root){
+             // if left part doesn't exist
+             if(!root->left){
+                 ans.push_back(root->data);
+                 root = root->right;
+             }
+             
+             // if left part exist
+             else{
+                 Node * curr = root->left;
+                 while(curr->right && curr->right != root){
+                     curr = curr->right;
+                 }
+                 // if left part not traverse 
+                 if(curr->right == NULL){
+                     curr->right = root;
+                     root = root->left;
+                 }
+                 // if left part traversed
+                 else{
+                     curr->right =NULL;
+                     ans.push_back(root->data);
+                     root = root->right;
+                 }
+             }
+             
+         }
+         return ans;
+     }
 };
 
 //{ Driver Code Starts.
