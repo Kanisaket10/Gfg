@@ -97,26 +97,59 @@ struct Node {
 */
 class Solution{
     public:
-    vector<int> preOrder(Node* root)
-    {
-        //code here
-        if(!root) return{};
-        vector<int> ans;
+    // vector<int> preOrder(Node* root)
+    // {
+    //     //code here
+    //     if(!root) return{};
+    //     vector<int> ans;
         
-        stack<Node*> st;
-        st.push(root);
+    //     stack<Node*> st;
+    //     st.push(root);
         
-        while(!st.empty()){
-            Node* temp = st.top();
-            st.pop();
-            ans.push_back(temp->data);
+    //     while(!st.empty()){
+    //         Node* temp = st.top();
+    //         st.pop();
+    //         ans.push_back(temp->data);
             
-            if(temp->right) st.push(temp->right);
-            if(temp->left) st.push(temp->left);
-        }
-        return ans;
+    //         if(temp->right) st.push(temp->right);
+    //         if(temp->left) st.push(temp->left);
+    //     }
+    //     return ans;
         
-    }
+    // }
+    
+    //  Here we are using Morris Traversal which Have space complexity O(1)   
+    vector<int> preOrder(Node* root){
+         vector<int> ans;
+         while(root){
+             // if left part doesn't exist
+             if(!root->left){
+                 ans.push_back(root->data);
+                 root = root->right;
+             }
+             
+             // if left part exist
+             else{
+                 Node * curr = root->left;
+                 while(curr->right && curr->right != root){
+                     curr = curr->right;
+                 }
+                 // if left part not traverse 
+                 if(curr->right == NULL){
+                     ans.push_back(root->data);
+                     curr->right = root;
+                     root = root->left;
+                 }
+                 // if left part traversed
+                 else{
+                     curr->right =NULL;
+                     root = root->right;
+                 }
+             }
+             
+         }
+         return ans;
+     }
 };
 
 //{ Driver Code Starts.
