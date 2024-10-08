@@ -96,27 +96,62 @@ struct Node {
 };*/
 class Solution{
     public:
-    vector<int> postOrder(Node* root) {
-        // code here
+    
+ //   Here the Time complexity is O(n) space complexity O(n)
+    // vector<int> postOrder(Node* root) {
+    //     // code here
         
-        if(!root) return {};
+    //     if(!root) return {};
         
-        vector<int> ans;
-        stack<Node*> st;
-        st.push(root);
+    //     vector<int> ans;
+    //     stack<Node*> st;
+    //     st.push(root);
         
-        while(!st.empty()){
-            Node* temp = st.top();
-            st.pop();
-            ans.push_back(temp->data);
+    //     while(!st.empty()){
+    //         Node* temp = st.top();
+    //         st.pop();
+    //         ans.push_back(temp->data);
             
-            if(temp->left) st.push(temp->left);
-            if(temp->right) st.push(temp->right);
-        }
+    //         if(temp->left) st.push(temp->left);
+    //         if(temp->right) st.push(temp->right);
+    //     }
         
+    //     reverse(ans.begin(), ans.end());
+    //     return ans;
+    // }
+    
+ //  Here we are using Morris Traversal which Have space complexity O(1) 
+   vector<int>  postOrder(Node* root){
+       vector<int> ans;        // In post Order LRN =>NRL 
+                               // then reverse the vector we get our ans 
+        while(root){
+            // if right part is exist
+            if(!root->right){
+                ans.push_back(root->data); // push the root node
+                root = root->left;         // move to it's left node
+                
+            }
+            // if
+            else{
+                Node * curr = root->right;
+                while(curr->left && curr->left != root){
+                    curr = curr->left;
+                }
+                if(curr->left == NULL){
+                    ans.push_back(root->data);
+                    curr->left = root;
+                    root = root->right;
+                }
+                else{
+                    curr->left = NULL;
+                    root = root->left;
+                }
+            }
+            
+        }  
         reverse(ans.begin(), ans.end());
         return ans;
-    }
+   }
 };
 
 //{ Driver Code Starts.
