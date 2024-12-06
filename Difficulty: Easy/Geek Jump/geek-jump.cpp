@@ -6,26 +6,36 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-    int solve(vector<int>& height, int n, vector<int>& dp){
-        //base case 
-        if(n == 0) return 0;
+  
+    int climbing(vector<int>& height, int index, vector<int>& dp){
+        if(index == 0) return 0;
         
-        if(dp[n] !=-1) return dp[n]; 
-        int left = solve(height, n-1,dp)  + abs(height[n] - height[n-1]);
+        if(dp[index] != -1) return dp[index];
         
+        int left = climbing(height, index-1, dp) + abs(height[index]-height[index-1]);
         int right = INT_MAX;
-        if(n >1) {
-            right = solve(height, n-2, dp) + abs(height[n] - height[n-2]);
+        if(index > 1){
+          right = climbing(height, index-2, dp) + abs(height[index] - height[index-2]);  
         }
+       
+        return dp[index] = min(left, right);
         
-      return dp[n] = min(left, right);
+        //Recursion
+        // int left = climbing(height, index-1) + abs(height[index]-height[index-1]);
+        // int right = INT_MAX;
+        // if(index > 1){
+        //   right = climbing(height, index-2) + abs(height[index] - height[index-2]);  
+        // }
+        
+        // return min(left, right);
+        
     }
-    
+  
     int minimumEnergy(vector<int>& height, int n) {
         // Code here
-         vector<int> dp(n+1,-1);
-         return solve(height, n-1,dp);
-       
+        
+        vector<int> dp(n+1, -1);
+        return climbing(height, n-1, dp);
         
     }
 };
@@ -44,7 +54,9 @@ int main() {
         }
         Solution obj;
         cout << obj.minimumEnergy(arr, N) << "\n";
-    }
+    
+cout << "~" << "\n";
+}
     return 0;
 }
 // } Driver Code Ends
