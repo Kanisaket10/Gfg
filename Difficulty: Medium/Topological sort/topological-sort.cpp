@@ -19,21 +19,54 @@ class Solution {
     }
     vector<int> topologicalSort(vector<vector<int>>& adj) {
         // Your code here
-        int n = adj.size();
+         int v = adj.size();
+    // Topological sort using dfs;
+        
+        // vector<int> ans;
+        // vector<bool> visited(v, 0);
+        
+        // stack<int> st;
+        
+        // for(int i=0; i<v; i++){
+        //     if(!visited[i]) {
+        //         dfs_topo(i, adj, visited, st);
+        //     }
+        // }
+        
+        // while(!st.empty()){
+        //     ans.push_back(st.top());
+        //     st.pop();
+        // }
+        // return ans;
+        
+    // topological sort using bfs or kahn's algorithm
+    
+        vector<int> Indeg(v, 0);
         vector<int> ans;
-        vector<bool> visited(n, 0);
-        
-        stack<int> st;
-        
-        for(int i=0; i<n; i++){
-            if(!visited[i]) {
-                dfs_topo(i, adj, visited, st);
+        for(int i=0; i<v; i++){
+            for(int j=0; j<adj[i].size(); j++){
+                Indeg[adj[i][j]]++;
             }
         }
         
-        while(!st.empty()){
-            ans.push_back(st.top());
-            st.pop();
+        queue<int> q;
+        for(int i=0; i<v; i++){
+            if(Indeg[i] == 0){
+                q.push(i);
+            }
+        }
+        
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            ans.push_back(node);
+            
+            for(int i=0; i<adj[node].size(); i++){
+                Indeg[adj[node][i]]--;
+                if(Indeg[adj[node][i]] == 0){
+                    q.push(adj[node][i]);
+                }
+            }
         }
         return ans;
     }
